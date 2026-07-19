@@ -246,9 +246,7 @@ def build_demo(
             )
         return ns, gs, dn, sp, du, pp, po
 
-    with gr.Blocks(title="OmniVoice Studio") as demo:
-        demo.theme_custom = theme
-        demo.css_custom = css
+    with gr.Blocks(theme=theme, css=css, title="OmniVoice Studio") as demo:
         gr.Markdown(
             """
 # [OmniVoice Studio 🎙️](https://github.com/Fazzbro/OmniVoice-Studio)
@@ -457,8 +455,6 @@ def main(argv=None) -> int:
         server_port=args.port,
         share=args.share,
         root_path=args.root_path,
-        theme=getattr(demo, "theme_custom", None),
-        css=getattr(demo, "css_custom", None),
     )
     return 0
 
