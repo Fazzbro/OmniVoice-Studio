@@ -42,7 +42,6 @@ def split_into_chunks(text: str, max_chars: int = 180) -> List[Tuple[str, bool]]
             if len(sent) <= max_chars:
                 para_chunks.append(sent)
             else:
-                # If a single sentence is still longer than max_chars, split on commas or colons
                 subclauses = [sub.strip() for sub in re.split(r'(?<=[,:])\s+', sent) if sub.strip()]
                 current_sub = ""
                 for clause in subclauses:
@@ -51,6 +50,7 @@ def split_into_chunks(text: str, max_chars: int = 180) -> List[Tuple[str, bool]]
                     else:
                         if current_sub:
                             para_chunks.append(current_sub)
+                            current_sub = ""
                         # If a single clause is STILL longer than max_chars, hard split on words
                         if len(clause) > max_chars:
                             words = clause.split()
@@ -68,6 +68,7 @@ def split_into_chunks(text: str, max_chars: int = 180) -> List[Tuple[str, bool]]
                             current_sub = clause
                 if current_sub:
                     para_chunks.append(current_sub)
+                    current_sub = ""
 
         # Mark only the last chunk of the paragraph as `is_end_of_paragraph=True`
         for c_idx, c_text in enumerate(para_chunks):
