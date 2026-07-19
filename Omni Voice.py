@@ -44,7 +44,6 @@ except ImportError:
                 return f
             return decorator
     spaces = _SpacesDummy()
-import gradio as gr
 import torch
 from omnivoice import OmniVoice, OmniVoiceGenerationConfig
 from omnivoice.cli.demo import build_demo
@@ -150,10 +149,4 @@ def generate_fn(*args, **kwargs):
 demo = build_demo(model, CHECKPOINT, generate_fn=generate_fn)
 
 if __name__ == "__main__":
-    launch_kwargs = {
-        "inbrowser": not bool(os.environ.get("SPACE_ID")),
-    }
-    if gr.__version__.split(".")[0] >= "6":
-        launch_kwargs["theme"] = getattr(demo, "custom_theme", None)
-        launch_kwargs["css"] = getattr(demo, "custom_css", None)
-    demo.queue().launch(**launch_kwargs)
+    demo.queue().launch()

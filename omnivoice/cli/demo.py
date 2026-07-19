@@ -246,14 +246,7 @@ def build_demo(
             )
         return ns, gs, dn, sp, du, pp, po
 
-    blocks_kwargs = {"title": "OmniVoice Studio"}
-    if gr.__version__.split(".")[0] < "6":
-        blocks_kwargs["theme"] = theme
-        blocks_kwargs["css"] = css
-
-    with gr.Blocks(**blocks_kwargs) as demo:
-        demo.custom_theme = theme
-        demo.custom_css = css
+    with gr.Blocks(theme=theme, css=css, title="OmniVoice Studio") as demo:
         gr.Markdown(
             """
 # [OmniVoice Studio 🎙️](https://github.com/Fazzbro/OmniVoice-Studio)
@@ -261,7 +254,6 @@ def build_demo(
 State-of-the-art text-to-speech model for **600+ languages**, supporting:
 
 - **Voice Clone** — Clone any voice from a reference audio with **`.pt` Prompt Serialization**
-- **📚 Long-Form Audiobook Generator** — Automatically chunk full chapters/scripts into sentences and synthesize long-form narration with human-like sentence and paragraph pauses!
 
 🌟 **Enhanced & Streamlined Version:** [View Repository on GitHub](https://github.com/Fazzbro/OmniVoice-Studio)  
 🛠️ **Original Foundation:** Built upon [OmniVoice](https://github.com/k2-fsa/OmniVoice) by Xiaomi AI Lab Next-gen Kaldi team.
@@ -424,99 +416,6 @@ State-of-the-art text-to-speech model for **600+ languages**, supporting:
                     outputs=[vc_saved_file, vc_status],
                 )
 
-            # ==============================================================
-            # Long-Form Audiobook Generator
-            # ==============================================================
-            with gr.TabItem("📚 Long-Form Audiobook"):
-                with gr.Row():
-                    with gr.Column(scale=1):
-                        lf_text = gr.Textbox(
-                            label="📖 Audiobook Script or Text Chapter",
-                            lines=8,
-                            placeholder="Paste your full chapter, article, or story here. The engine will automatically chunk sentences and synthesize long-form audio with human-like pauses...",
-                        )
-                        lf_prompt_file = gr.File(
-                            label="[Option 1] Load Saved Narrator Voice (.pt)",
-                            file_types=[".pt"],
-                            type="filepath",
-                        )
-                        gr.Markdown("**OR:** Provide reference audio for narrator voice:")
-                        lf_ref_audio = gr.Audio(
-                            label="[Option 2] Narrator Reference Audio",
-                            type="filepath",
-                            elem_classes="compact-audio",
-                        )
-                        lf_ref_text = gr.Textbox(
-                            label="Reference Text (optional)",
-                            lines=1,
-                            placeholder="Transcript of narrator reference audio if uploaded.",
-                        )
-                        lf_lang = _lang_dropdown("Language (optional)")
-                        with gr.Accordion("Audiobook Pacing & Pauses", open=True):
-                            lf_sentence_pause = gr.Slider(
-                                0, 1500, value=350, step=50, label="Sentence Pause (ms)",
-                                info="Silence inserted between regular sentences."
-                            )
-                            lf_para_pause = gr.Slider(
-                                0, 3000, value=750, step=50, label="Paragraph Pause (ms)",
-                                info="Silence inserted between double-newline paragraphs."
-                            )
-                            lf_speed = gr.Slider(
-                                0.5, 1.5, value=0.9, step=0.05, label="Narrator Speed",
-                                info="0.9 recommended for deliberate, clear narration."
-                            )
-                        with gr.Accordion("Advanced Settings", open=False):
-                            lf_ns = gr.Slider(4, 64, value=32, step=1, label="Inference Steps")
-                            lf_gs = gr.Slider(0.0, 4.0, value=2.0, step=0.1, label="Guidance Scale (CFG)")
-                            lf_dn = gr.Checkbox(label="Denoise", value=True)
-                            lf_instruct = gr.Textbox(label="Instruct (optional)", lines=1)
-                        with gr.Row():
-                            lf_btn = gr.Button("🚀 Generate Long-Form Audiobook", variant="primary")
-                    with gr.Column(scale=1):
-                        lf_audio = gr.Audio(label="🎧 Combined Long-Form Audiobook", type="numpy")
-                        lf_file = gr.File(label="📦 Download Complete Audiobook (.wav)")
-                        lf_report = gr.Textbox(label="📊 Generation Report & Stats", lines=5)
-
-                def _longform_fn(
-                    text, lang, ref_aud, ref_text, prompt_file, sent_pause, para_pause, speed, ns, gs, dn, instruct, progress=gr.Progress()
-                ):
-                    from omnivoice.utils.longform import synthesize_longform_audiobook
-                    return synthesize_longform_audiobook(
-                        model=model,
-                        text=text,
-                        language=lang,
-                        ref_audio=ref_aud,
-                        ref_text=ref_text or None,
-                        prompt_file=prompt_file,
-                        instruct=instruct,
-                        speed=speed,
-                        num_step=ns,
-                        guidance_scale=gs,
-                        denoise=dn,
-                        sentence_pause_ms=int(sent_pause),
-                        paragraph_pause_ms=int(para_pause),
-                        progress_callback=progress,
-                    )
-
-                lf_btn.click(
-                    _longform_fn,
-                    inputs=[
-                        lf_text,
-                        lf_lang,
-                        lf_ref_audio,
-                        lf_ref_text,
-                        lf_prompt_file,
-                        lf_sentence_pause,
-                        lf_para_pause,
-                        lf_speed,
-                        lf_ns,
-                        lf_gs,
-                        lf_dn,
-                        lf_instruct,
-                    ],
-                    outputs=[lf_audio, lf_file, lf_report],
-                )
-
     return demo
 
 
@@ -551,17 +450,12 @@ def main(argv=None) -> int:
 
     demo = build_demo(model, checkpoint)
 
-    launch_kwargs = {
-        "server_name": args.ip,
-        "server_port": args.port,
-        "share": args.share,
-        "root_path": args.root_path,
-        "inbrowser": True,
-    }
-    if gr.__version__.split(".")[0] >= "6":
-        launch_kwargs["theme"] = getattr(demo, "custom_theme", None)
-        launch_kwargs["css"] = getattr(demo, "custom_css", None)
-    demo.queue().launch(**launch_kwargs)
+    demo.queue().launch(
+        server_name=args.ip,
+        server_port=args.port,
+        share=args.share,
+        root_path=args.root_path,
+    )
     return 0
 
 

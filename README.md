@@ -85,19 +85,12 @@ Instead of re-extracting speaker embeddings and processing reference audio on ev
 * **Instant Loading:** Directly upload or select a pre-saved `.pt` prompt file in the UI to skip reference audio processing entirely.
 * **Automatic Export:** Every time you generate speech, the extracted prompt is automatically exported as a downloadable artifact in `saved_prompts/`.
 
-### 2. 📚 Long-Form Audiobook Generator (`longform.py`)
-Standard zero-shot TTS models struggle with multi-paragraph text due to attention drift and GPU memory constraints. This repository introduces an **intelligent Long-Form Narration Engine**:
-* **Smart Sentence & Clause Chunking:** Automatically parses full articles, chapters, or stories into natural sentence chunks under ~180 characters using NLP boundary detection.
-* **Zero-Overhead Prompt Reuse:** Extracts the narrator's voice embedding once and reuses it across all sentences, keeping synthesis blazing fast.
-* **Human-Like Pacing & Silence Padding:** Configurable `Sentence Pause` (default: `350ms`) and `Paragraph Pause` (default: `750ms`) ensure natural, professional pauses between sentences and double-newline paragraph breaks.
-* **Seamless Audio Stitching:** Merges all chunks into a crystal-clear, unified `.wav` file saved automatically to `generated_audiobooks/` alongside a detailed statistical generation report.
-
-### 3. 🎨 Clean, Streamlined English-Only UI
+### 2. 🎨 Clean, Streamlined English-Only UI
 * Removed redundant dual-language Chinese/English clutter from labels and buttons for a clean, modern aesthetic.
-* Removed the experimental "Voice Design" tab to focus 100% on **High-Fidelity Voice Cloning** and **Long-Form Audiobooks**.
+* Removed the experimental "Voice Design" tab to focus 100% on **High-Fidelity Voice Cloning**.
 * **Optimized Defaults:** Default generation speed is tuned to **`0.9`** for more natural, deliberate pacing and clearer articulation across complex sentences.
 
-### 4. 🛡️ Offline Caching & Storage Management
+### 3. 🛡️ Offline Caching & Storage Management
 * Automatic redirect of Hugging Face cache (`HF_HOME`, `HF_HUB_CACHE`) and PyTorch cache (`TORCH_HOME`) to a local `models_cache/` directory when running locally on Windows/Linux.
 * Prevents `C:\` drive exhaustion when downloading the ~3.36 GB model weights.
 * Pre-enabled `HF_HUB_OFFLINE=1` once weights are downloaded locally to eliminate startup latency and network timeouts.
