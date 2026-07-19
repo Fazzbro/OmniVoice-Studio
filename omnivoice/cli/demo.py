@@ -246,17 +246,17 @@ def build_demo(
             )
         return ns, gs, dn, sp, du, pp, po
 
-    with gr.Blocks(theme=theme, css=css, title="OmniVoice Demo") as demo:
+    with gr.Blocks(theme=theme, css=css, title="OmniVoice Studio") as demo:
         gr.Markdown(
             """
-# OmniVoice Demo
+# [OmniVoice Studio 🎙️](https://github.com/Fazzbro/OmniVoice-Studio)
 
 State-of-the-art text-to-speech model for **600+ languages**, supporting:
 
-- **Voice Clone** — Clone any voice from a reference audio
+- **Voice Clone** — Clone any voice from a reference audio with **`.pt` Prompt Serialization**
 
-Built with [OmniVoice](https://github.com/k2-fsa/OmniVoice)
-by Xiaomi AI Lab Next-gen Kaldi team.
+🌟 **Enhanced & Streamlined Version:** [View Repository on GitHub](https://github.com/Fazzbro/OmniVoice-Studio)  
+🛠️ **Original Foundation:** Built upon [OmniVoice](https://github.com/k2-fsa/OmniVoice) by Xiaomi AI Lab Next-gen Kaldi team.
 """
         )
 

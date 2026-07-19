@@ -1,4 +1,16 @@
-# OmniVoice Studio: Streamlined Voice Cloning & Prompt Management
+---
+title: OmniVoice Studio
+emoji: 🎙️
+colorFrom: blue
+colorTo: purple
+sdk: gradio
+sdk_version: 4.44.0
+app_file: app.py
+pinned: false
+license: apache-2.0
+---
+
+# [OmniVoice Studio 🎙️](https://github.com/Fazzbro/OmniVoice-Studio)
 
 <div align="center">
 
@@ -12,21 +24,22 @@ An enhanced, streamlined, and modular version of **OmniVoice**, featuring **pers
 
 ---
 
-### 🌟 Powered by Hugging Face & Xiaomi AI Lab
+### 🌟 Interactive Demo & Model Access
 
 <table>
   <tr>
-    <td align="center" width="140px">
-      <a href="https://huggingface.co/k2-fsa/OmniVoice">
-        <img src="https://huggingface.co/front/assets/huggingface_logo-noborder.svg" width="80px" alt="Hugging Face Logo"><br>
-        <b>Hugging Face Model</b>
+    <td align="center" width="160px">
+      <a href="https://github.com/Fazzbro/OmniVoice-Studio">
+        <img src="https://huggingface.co/front/assets/huggingface_logo-noborder.svg" width="80px" alt="Hugging Face / GitHub Version"><br>
+        <b>🎙️ OmniVoice Studio<br>(Custom GitHub Repo)</b>
       </a>
     </td>
     <td>
-      <b>OmniVoice: State-of-the-Art Zero-Shot Voice Cloning for 600+ Languages</b><br>
-      Explore pre-trained checkpoints, interactive web demos, and official research releases on the Hugging Face Hub.<br>
-      <a href="https://huggingface.co/k2-fsa/OmniVoice">📦 Model Card: <code>k2-fsa/OmniVoice</code></a> &nbsp;|&nbsp;
-      <a href="https://huggingface.co/spaces/k2-fsa/OmniVoice">🚀 Official HF Space Demo</a>
+      <b>OmniVoice Studio: State-of-the-Art Zero-Shot Voice Cloning</b><br>
+      Explore our streamlined open-source repository on GitHub or run the interactive live Space on Hugging Face.<br>
+      <a href="https://github.com/Fazzbro/OmniVoice-Studio">⭐ View Custom Repo on GitHub</a> &nbsp;|&nbsp;
+      <a href="https://huggingface.co/spaces/Expodecaprio/OmniVoice-Studio">🚀 Live Interactive Space</a> &nbsp;|&nbsp;
+      <a href="https://huggingface.co/k2-fsa/OmniVoice">📦 Pre-trained Weights: <code>k2-fsa/OmniVoice</code></a>
     </td>
   </tr>
 </table>
@@ -78,9 +91,9 @@ Instead of re-extracting speaker embeddings and processing reference audio on ev
 * **Optimized Defaults:** Default generation speed is tuned to **`0.9`** for more natural, deliberate pacing and clearer articulation across complex sentences.
 
 ### 3. 🛡️ Offline Caching & Storage Management
-* Automatic redirect of Hugging Face cache (`HF_HOME`, `HF_HUB_CACHE`) and PyTorch cache (`TORCH_HOME`) to a local `models_cache/` directory.
+* Automatic redirect of Hugging Face cache (`HF_HOME`, `HF_HUB_CACHE`) and PyTorch cache (`TORCH_HOME`) to a local `models_cache/` directory when running locally on Windows/Linux.
 * Prevents `C:\` drive exhaustion when downloading the ~3.36 GB model weights.
-* Pre-enabled `HF_HUB_OFFLINE=1` once weights are downloaded to eliminate startup latency and network timeouts.
+* Pre-enabled `HF_HUB_OFFLINE=1` once weights are downloaded locally to eliminate startup latency and network timeouts.
 
 ---
 
@@ -92,7 +105,7 @@ Instead of re-extracting speaker embeddings and processing reference audio on ev
 
 ### 1. Clone the Repository
 ```bash
-git clone https://github.com/YourUsername/OmniVoice-Studio.git
+git clone https://github.com/Fazzbro/OmniVoice-Studio.git
 cd OmniVoice-Studio
 ```
 
@@ -132,10 +145,11 @@ python "Omni Voice.py"
 
 ```text
 OmniVoice-Studio/
-├── Omni Voice.py          # Main application runner, offline cache config & Gradio server
+├── app.py                 # Hugging Face Spaces entry point
+├── Omni Voice.py          # Local runner with D:\ drive offline cache config & Gradio server
 ├── requirements.txt       # Clean, exact Python dependencies
 ├── LICENSE                # Apache 2.0 License with Xiaomi AI Lab attribution
-├── README.md              # Project documentation and legal disclaimer
+├── README.md              # Project documentation, Spaces YAML, and legal disclaimer
 └── omnivoice/             # Enhanced bundled package (self-contained)
     ├── __init__.py        # Exports OmniVoice, VoiceClonePrompt, generation configs
     ├── models/
