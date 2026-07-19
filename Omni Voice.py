@@ -149,4 +149,7 @@ def generate_fn(*args, **kwargs):
 demo = build_demo(model, CHECKPOINT, generate_fn=generate_fn)
 
 if __name__ == "__main__":
-    demo.queue().launch()
+    demo.queue().launch(
+        theme=getattr(demo, "theme_custom", None),
+        css=getattr(demo, "css_custom", None),
+    )
