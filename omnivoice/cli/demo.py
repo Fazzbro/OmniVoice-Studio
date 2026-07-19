@@ -246,7 +246,14 @@ def build_demo(
             )
         return ns, gs, dn, sp, du, pp, po
 
-    with gr.Blocks(theme=theme, css=css, title="OmniVoice Studio") as demo:
+    blocks_kwargs = {"title": "OmniVoice Studio"}
+    if gr.__version__.split(".")[0] < "6":
+        blocks_kwargs["theme"] = theme
+        blocks_kwargs["css"] = css
+
+    with gr.Blocks(**blocks_kwargs) as demo:
+        demo.custom_theme = theme
+        demo.custom_css = css
         gr.Markdown(
             """
 # [OmniVoice Studio 🎙️](https://github.com/Fazzbro/OmniVoice-Studio)
@@ -544,12 +551,17 @@ def main(argv=None) -> int:
 
     demo = build_demo(model, checkpoint)
 
-    demo.queue().launch(
-        server_name=args.ip,
-        server_port=args.port,
-        share=args.share,
-        root_path=args.root_path,
-    )
+    launch_kwargs = {
+        "server_name": args.ip,
+        "server_port": args.port,
+        "share": args.share,
+        "root_path": args.root_path,
+        "inbrowser": True,
+    }
+    if gr.__version__.split(".")[0] >= "6":
+        launch_kwargs["theme"] = getattr(demo, "custom_theme", None)
+        launch_kwargs["css"] = getattr(demo, "custom_css", None)
+    demo.queue().launch(**launch_kwargs)
     return 0
 
 
